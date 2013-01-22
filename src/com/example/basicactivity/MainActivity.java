@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -24,10 +25,14 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         _context=this;
         
+        System.loadLibrary("math");
+        
         //someWork(10);  // This would block the main thread
         
 		WorkThread workThread = new WorkThread();
 		workThread.execute(10);
+				
+        Log.d("MainActivity", "finished onCreate()");
     }
     
     public void someWork(int waitCount) {
@@ -67,6 +72,8 @@ public class MainActivity extends Activity {
 	    		publishProgress((double)(i+1) / (double)waitCount);
 	    	}
 	    	
+	    	Log.d("BasicActivity", "Native addition result: " + nativeAdd(2,5));
+	    	    	
 			return true;
 		}	
 		
@@ -116,7 +123,8 @@ public class MainActivity extends Activity {
     public void clickedButton1(View v) {
 		Intent i = new Intent(MainActivity.this, NewActivity.class);
         startActivity(i);
-    	finish();
+    	//finish();
     }
     
+    public native int nativeAdd(int left, int right);
 }
